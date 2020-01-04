@@ -33,11 +33,11 @@
 (setq display-line-numbers-type t)
 
 (when IS-MAC
-  (add-to-list 'exec-path "/usr/local/share/dotnet"))
-
-(when IS-MAC
+  (add-to-list 'exec-path "/usr/local/share/dotnet")
+  (add-to-list 'exec-path "/usr/local/bin")
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
+                  "/usr/local/bin" ":"
                   (getenv "PATH"))))
 
 
@@ -79,10 +79,12 @@
 (map!
  :n [tab] #'indent-for-tab-command
  :i "C-h" #'backward-delete-char-untabify
+ :nm "C-x ]" #'+default/search-project-for-symbol-at-point
 
  (:when IS-MAC
    :nvmi "s-x" 'counsel-M-x)
 
  (:leader
-   :desc "Switch to last buffer"  :n  "TAB" #'wc/switch-to-mru-buffer)
+   :desc "Switch to last buffer"  :n  "TAB" #'wc/switch-to-mru-buffer
+   )
 )
