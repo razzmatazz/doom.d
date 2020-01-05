@@ -32,15 +32,6 @@
 ;; `nil' to disable it:
 (setq display-line-numbers-type nil)
 
-(when IS-MAC
-  (add-to-list 'exec-path "/usr/local/share/dotnet")
-  (add-to-list 'exec-path "/usr/local/bin")
-
-  (setenv "PATH"
-          (concat "/usr/local/share/dotnet" ":"
-                  "/usr/local/bin" ":"
-                  (getenv "PATH"))))
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -56,6 +47,18 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+
+(when IS-MAC
+  (add-to-list 'exec-path "/usr/local/share/dotnet")
+  (add-to-list 'exec-path "/usr/local/bin")
+
+  (setenv "PATH"
+          (concat "/usr/local/share/dotnet" ":"
+                  "/usr/local/bin" ":"
+                  (getenv "PATH"))))
+
+(after! smartparens
+  (smartparens-global-mode -1))
 
 (map!
  :n [tab] #'indent-for-tab-command
