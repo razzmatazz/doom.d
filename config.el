@@ -30,16 +30,16 @@
 
 ;; If you want to change the style of line numbers, change this to `relative' or
 ;; `nil' to disable it:
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type nil)
 
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
+
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
                   "/usr/local/bin" ":"
                   (getenv "PATH"))))
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -57,38 +57,25 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-
-(defun wc/switch-to-mru-buffer ()
-  "Switches to the most recently used buffer, including visible buffers."
-  (interactive)
-  (setq current-buffer-name (buffer-name (current-buffer)))
-  (setq buffer-candidates (cl-remove-if #'(lambda (buffer) (string-match-p current-buffer-name (buffer-name buffer))) (buffer-list)))
-  (wc/do-switch-to-mru-buffer buffer-candidates))
-
-
-(defun wc/do-switch-to-mru-buffer (buffer-candidates)
-  (setq buffer-candidate (car buffer-candidates))
-  (setq rest (cdr buffer-candidates))
-  (if (string-match-p current-buffer-name (buffer-name buffer-candidate))
-      (wc/do-switch-to--buffer rest)
-    (if (eq 0 (cl-list-length buffer-candidates))
-        (message "No more buffer candidates.")
-      (switch-to-buffer buffer-candidate))))
-
-
 (map!
  :n [tab] #'indent-for-tab-command
- :i "C-h" #'backward-delete-char-untabify
+ :i "C-h" #'backward-delete-char
+ :nm "C-]" #'+lookup/definition
  :nm "C-x ]" #'+default/search-project-for-symbol-at-point
+ :nvmi "C-x C-d" #'dired-jump
 
  (:when IS-MAC
    :nvmi "s-x" 'counsel-M-x)
 
  (:leader
-   :desc "Switch to last buffer" :n  "TAB" #'wc/switch-to-mru-buffer
+   ;;:desc "Switch to last buffer" :n  "TAB" #'wc/switch-to-mru-buffer
 
    (:desc "git" :prefix "g"
      :desc "Git status" :n  "s" #'magit-status
-     :desc "Git blame"  :n  "b" #'magit-blame)
-   )
+     :desc "Git blame"  :n  "b" #'magit-blame))
+
+ (:after dired
+   :map dired-mode-map
+   :nm "o" #'dired-find-file
+   :nm "O" #'dired-up-directory)
 )
