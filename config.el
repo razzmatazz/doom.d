@@ -48,6 +48,8 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+(display-time)
+
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
