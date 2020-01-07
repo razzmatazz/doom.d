@@ -25,8 +25,6 @@
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'zenburn)
 
-;; If you intend to use org, it is recommended you change this!
-(setq org-directory "~/Dropbox/org/")
 
 ;; If you want to change the style of line numbers, change this to `relative' or
 ;; `nil' to disable it:
@@ -48,8 +46,7 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(display-time)
-
+;; system config
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
@@ -59,15 +56,47 @@
                   "/usr/local/bin" ":"
                   (getenv "PATH"))))
 
+;; misc
 (after! smartparens
   (smartparens-global-mode -1))
 
+;; org mode
+(setq org-directory "~/Dropbox/org/")
+
+(after! org
+  (setq org-startup-indented nil)
+; (setq org-agenda-files '("~/Dropbox/org" "~/Dropbox/org/printlog"))
+; (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/org-calendar.ics")
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+  (setq org-agenda-default-appointment-duration 60))
+
+;; mode line
+(display-time)
+
+;;
+;; key bindings
+;;
+
+(defun sm-move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2))
+
+(defun sm-move-line-down ()
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1))
+
 (map!
- :n [tab] #'indent-for-tab-command
+ :nv [tab] #'indent-for-tab-command
  :i "C-h" #'backward-delete-char
  :nm "C-]" #'+lookup/definition
  :nm "C-x ]" #'+default/search-project-for-symbol-at-point
  :nvmi "C-x C-d" #'dired-jump
+ :ni "M-<up>" #'sm-move-line-up
+ :ni "M-<down>" #'sm-move-line-down
 
  (:when IS-MAC
    :nvmi "s-x" 'counsel-M-x)
