@@ -102,7 +102,7 @@
    :nvmi "s-x" 'counsel-M-x)
 
  (:leader
-   ;;:desc "Switch to last buffer" :n  "TAB" #'wc/switch-to-mru-buffer
+   :desc "Switch to last buffer" :n  "TAB" #'mode-line-other-buffer
 
    (:desc "git" :prefix "g"
      :desc "Git status" :n  "s" #'magit-status
