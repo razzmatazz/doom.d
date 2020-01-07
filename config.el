@@ -56,11 +56,18 @@
                   "/usr/local/bin" ":"
                   (getenv "PATH"))))
 
-;; misc
+;;
+;; disable stuff from the default doom config
+;;
 (after! smartparens
   (smartparens-global-mode -1))
 
-;; org mode
+(after! evil-snipe
+  (evil-snipe-mode -1))
+
+;;
+;; org mode setup
+;;
 (setq org-directory "~/Dropbox/org/")
 
 (after! org
@@ -71,7 +78,9 @@
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
   (setq org-agenda-default-appointment-duration 60))
 
+;;
 ;; mode line
+;;
 (display-time)
 
 ;;
@@ -117,12 +126,6 @@
    :map dired-mode-map
    :nm "o" #'dired-find-file
    :nm "O" #'dired-up-directory)
-
- (:after prodigy
-   :map prodigy-mode-map
-   :nm "s" #'prodigy-start-service
-   :nm "S" #'prodigy-stop-service
-   :nm "s" #'prodigy-restart-service)
 )
 
 (load! "+private.el")
