@@ -77,6 +77,8 @@
 ;;
 ;; key bindings
 ;;
+(after! prodigy
+  (set-evil-initial-state! 'prodigy-mode 'motion))
 
 (defun sm-move-line-up ()
   (interactive)
@@ -106,10 +108,21 @@
 
    (:desc "git" :prefix "g"
      :desc "Git status" :n  "s" #'magit-status
-     :desc "Git blame"  :n  "b" #'magit-blame))
+     :desc "Git blame"  :n  "b" #'magit-blame)
+
+   (:desc "open" :prefix "o"
+     :desc "Prodigy services" :n "s" #'prodigy))
 
  (:after dired
    :map dired-mode-map
    :nm "o" #'dired-find-file
    :nm "O" #'dired-up-directory)
+
+ (:after prodigy
+   :map prodigy-mode-map
+   :nm "s" #'prodigy-start-service
+   :nm "S" #'prodigy-stop-service
+   :nm "s" #'prodigy-restart-service)
 )
+
+(load! "+private.el")
