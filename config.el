@@ -116,6 +116,12 @@
 ;;
 ;; custom functions
 ;;
+(defun sm-hide-dos-eol ()
+  "Do not show ^M in files containing mixed UNIXand DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
 (defun sm-move-line-up ()
   (interactive)
   (transpose-lines 1)
