@@ -95,17 +95,18 @@
   (setq tab-width 4)
   (setq evil-shift-width 4))
 
-(add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t)
+(after! omnisharp
+  (map! (:map omnisharp-mode-map
+          :localleader
+          (:prefix "r"
+            "m"  #'omnisharp-rename
+            "r"  #'omnisharp-run-code-action-refactoring)
+          (:prefix "t"
+            "p" #'omnisharp-unit-test-at-point
+            "t" #'omnisharp-unit-test-last
+            "b" #'omnisharp-unit-test-buffer)))
 
-(map! (:map omnisharp-mode-map
-        :localleader
-        (:prefix "r"
-          "m"  #'omnisharp-rename
-          "r"  #'omnisharp-run-code-action-refactoring)
-        (:prefix "t"
-          "p" #'omnisharp-unit-test-at-point
-          "t" #'omnisharp-unit-test-last
-          "b" #'omnisharp-unit-test-buffer)))
+  (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
 
 ;;
 ;; custom functions
@@ -158,6 +159,7 @@
 
  (:after prodigy
    :map prodigy-mode-map
-   :nm "$" #'prodigy-display-process))
+   :nm "$" #'prodigy-display-process)
+)
 
 (load! "+private.el")
