@@ -9,16 +9,8 @@
 (setq user-full-name "Saulius Menkevičius"
       user-mail-address "sauliusmenkevicius@fastmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
 (setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(setq doom-big-font (font-spec :family "Source Code Pro" :size 17))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -84,11 +76,8 @@
 (display-time)
 
 ;;
-;; key bindings
+;; custom functions
 ;;
-(after! prodigy
-  (set-evil-initial-state! 'prodigy-mode 'motion))
-
 (defun sm-move-line-up ()
   (interactive)
   (transpose-lines 1)
@@ -100,6 +89,12 @@
   (transpose-lines 1)
   (forward-line -1))
 
+;;
+;; key bindings
+;;
+(after! prodigy
+  (set-evil-initial-state! 'prodigy-mode 'motion))
+
 (map!
  :nv [tab] #'indent-for-tab-command
  :i "C-h" #'backward-delete-char
@@ -108,9 +103,7 @@
  :nvmi "C-x C-d" #'dired-jump
  :ni "M-<up>" #'sm-move-line-up
  :ni "M-<down>" #'sm-move-line-down
-
- (:when IS-MAC
-   :nvmi "s-x" 'counsel-M-x)
+ :nvmi "s-x" #'counsel-M-x
 
  (:leader
    :desc "Switch to last buffer" :n  "TAB" #'mode-line-other-buffer
@@ -126,6 +119,10 @@
    :map dired-mode-map
    :nm "o" #'dired-find-file
    :nm "O" #'dired-up-directory)
+
+ (:after prodigy
+   :map prodigy-mode-map
+   :nm "$" #'prodigy-display-process)
 )
 
 (load! "+private.el")
