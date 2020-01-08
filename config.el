@@ -84,7 +84,7 @@
 (setq dabbrev-case-replace nil)
 
 ;;
-;; language-specific
+;; language: C#
 ;;
 (defun sm-csharp-mode-setup ()
   (setq indent-tabs-mode nil)
@@ -107,6 +107,11 @@
             "b" #'omnisharp-unit-test-buffer)))
 
   (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
+
+;;
+;; language: web/html
+;;
+(add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
 
 ;;
 ;; custom functions
