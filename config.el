@@ -95,6 +95,9 @@
 (after! prodigy
   (set-evil-initial-state! 'prodigy-mode 'motion))
 
+(after! docker
+  (set-evil-initial-state! 'prodigy-mode 'motion))
+
 (map!
  :nv [tab] #'indent-for-tab-command
  :i "C-h" #'backward-delete-char
@@ -104,6 +107,7 @@
  :ni "M-<up>" #'sm-move-line-up
  :ni "M-<down>" #'sm-move-line-down
  :nvmi "s-x" #'counsel-M-x
+ :nvmi "s-e" #'+shell/toggle
 
  (:leader
    :desc "Switch to last buffer" :n  "TAB" #'mode-line-other-buffer
