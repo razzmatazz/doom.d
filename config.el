@@ -38,7 +38,9 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+;;
 ;; system config
+;;
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
@@ -76,6 +78,36 @@
 (display-time)
 
 ;;
+;; misc
+;;
+(setq dabbrev-case-fold-search 'case-fold-search)
+(setq dabbrev-case-replace nil)
+
+;;
+;; language-specific
+;;
+(defun sm-csharp-mode-setup ()
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+  (setq evil-shift-width 4))
+
+(add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t)
+
+(map! (:map omnisharp-mode-map
+        :localleader
+        (:prefix "r"
+          "m"  #'omnisharp-rename
+          "r"  #'omnisharp-run-code-action-refactoring)
+        (:prefix "t"
+          "p" #'omnisharp-unit-test-at-point
+          "t" #'omnisharp-unit-test-last
+          "b" #'omnisharp-unit-test-buffer)))
+
+;;
 ;; custom functions
 ;;
 (defun sm-move-line-up ()
@@ -96,10 +128,10 @@
   (set-evil-initial-state! 'prodigy-mode 'motion))
 
 (after! docker
-  (set-evil-initial-state! 'prodigy-mode 'motion))
+  (set-evil-initial-state! 'docker-mode 'motion))
 
 (map!
- :nv [tab] #'indent-for-tab-command
+ :nv "TAB" #'indent-for-tab-command
  :i "C-h" #'backward-delete-char
  :nm "C-]" #'+lookup/definition
  :nm "C-x ]" #'+default/search-project-for-symbol-at-point
@@ -126,7 +158,6 @@
 
  (:after prodigy
    :map prodigy-mode-map
-   :nm "$" #'prodigy-display-process)
-)
+   :nm "$" #'prodigy-display-process))
 
 (load! "+private.el")

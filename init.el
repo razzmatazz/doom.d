@@ -37,9 +37,9 @@
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
-       (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
-        +defaults)       ; default popup rules
+       (popup)           ; tame sudden yet inevitable temporary windows
+       ; +all             ; catch all popups that start with an asterix
+       ; +defaults)       ; default popup rules
        ;;pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
@@ -117,7 +117,7 @@
        ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
        ;;faust             ; dsp, but you get to keep your soul
-       fsharp           ; ML stands for Microsoft's Language
+       (fsharp +lsp)           ; ML stands for Microsoft's Language
        go                ; the hipster dialect
        ;;(haskell +dante)  ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
