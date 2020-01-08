@@ -44,10 +44,13 @@
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
+  (add-to-list 'exec-path "/usr/local/bin")
+  (add-to-list 'exec-path (concat (getenv "HOME") "/bin/google-cloud-sdk/bin"))
 
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
                   "/usr/local/bin" ":"
+                  (concat (getenv "HOME") "/bin/google-cloud-sdk/bin") ":"
                   (getenv "PATH"))))
 
 ;;
