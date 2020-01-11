@@ -109,9 +109,13 @@
   (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
 
 ;;
-;; language: web/html
+;; language: web/html, pug, etc.
 ;;
 (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
+
+(after! pug
+  (add-hook 'pug-mode-hook '(lambda ()
+                              (setq pug-tab-width 2))))
 
 ;;
 ;; custom functions
@@ -143,7 +147,7 @@
   (set-evil-initial-state! 'docker-mode 'motion))
 
 (map!
- :nv "TAB" #'indent-for-tab-command
+ :nv [tab] #'indent-for-tab-command
  :i "C-h" #'backward-delete-char
  :nm "C-]" #'+lookup/definition
  :nm "C-x ]" #'+default/search-project-for-symbol-at-point
