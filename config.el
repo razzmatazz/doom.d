@@ -85,6 +85,35 @@
 (setq dabbrev-case-replace nil)
 
 ;;
+;; mail
+;;
+(when IS-LINUX
+  (add-load-path! "/usr/share/emacs/site-lisp/mu4e"))
+
+(after! mu4e
+  (setq! mu4e-maildir (expand-file-name "~/Maildir") ; the rest of the mu4e folders are RELATIVE to this one
+         mu4e-get-mail-command "mbsync -a"
+         mu4e-index-update-in-background t
+         mu4e-compose-signature-auto-include t
+         mu4e-use-fancy-chars t
+         mu4e-view-show-addresses t
+         mu4e-view-show-images t
+         mu4e-compose-format-flowed t
+         mu4e-change-filenames-when-moving t ;; http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/
+         mu4e-maildir-shortcuts
+         '( ("/Inbox" . ?i)
+            ("/Archive" . ?a)
+            ("/Drafts" . ?d)
+            ("/Deleted Items" . ?t)
+            ("/Sent Items" . ?s))
+
+         ;; Message Formatting and sending
+         message-send-mail-function 'smtpmail-send-it
+         message-citation-line-function 'message-insert-formatted-citation-line
+         message-kill-buffer-on-exit t
+         ))
+
+;;
 ;; language: C#
 ;;
 (defun sm-csharp-mode-setup ()
@@ -166,7 +195,9 @@
      :desc "Git blame"  :n  "b" #'magit-blame)
 
    (:desc "open" :prefix "o"
-     :desc "Prodigy services" :n "s" #'prodigy))
+     :desc "Prodigy services" :n "s" #'prodigy
+     :desc "Mail" :n "m" #'mu4e)
+   )
 
  (:after dired
    :map dired-mode-map
