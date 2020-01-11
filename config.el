@@ -76,6 +76,7 @@
 ;; mode line
 ;;
 (display-time)
+(remove-hook 'shell-mode-hook #'hide-mode-line-mode)
 
 ;;
 ;; misc
