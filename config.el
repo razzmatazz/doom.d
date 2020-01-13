@@ -87,6 +87,9 @@
 (setq dabbrev-case-fold-search 'case-fold-search)
 (setq dabbrev-case-replace nil)
 
+(after! company
+  (setq company-idle-delay 0.2))
+
 ;;
 ;; mail
 ;;
@@ -192,6 +195,11 @@
 
  (:leader
    :desc "Switch to last buffer" :n  "TAB" #'mode-line-other-buffer
+
+   (:desc "flycheck/make" :prefix "e"
+     :desc "List errors/diagnostics" :n "l" #'flycheck-list-errors
+     :desc "Previous error" :n "p" #'flycheck-previous-error
+     :desc "Next error" :n "n" #'flycheck-next-error)
 
    (:desc "git" :prefix "g"
      :desc "Git status" :n  "s" #'magit-status
