@@ -63,6 +63,11 @@
   (evil-snipe-mode -1))
 
 ;;
+;; evil overrides
+;;
+(evil-set-initial-state 'shell-mode 'normal)
+
+;;
 ;; org mode setup
 ;;
 (setq org-directory "~/Dropbox/org/")
@@ -218,6 +223,12 @@
  (:after prodigy
    :map prodigy-mode-map
    :nm "$" #'prodigy-display-process)
+
+ (:after prodigy
+   :map prodigy-view-mode-map
+   :nm "0" #'beginning-of-line
+   :nm "C-a" #'beginning-of-line
+   :nm "C-e" #'end-of-line)
 )
 
 (load! "+private.el")
