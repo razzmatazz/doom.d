@@ -101,6 +101,9 @@
 (when IS-LINUX
   (add-load-path! "/usr/share/emacs/site-lisp/mu4e"))
 
+(when IS-MAC
+  (add-load-path! "/usr/local/share/emacs/site-lisp/mu/mu4e"))
+
 (after! mu4e
   (setq! mu4e-maildir (expand-file-name "~/Maildir") ; the rest of the mu4e folders are RELATIVE to this one
          mu4e-get-mail-command "mbsync -a"
