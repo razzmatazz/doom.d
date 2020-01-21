@@ -83,8 +83,9 @@
   (setq org-agenda-default-appointment-duration 60))
 
 ;;
-;; mode line
+;; menu & mode line
 ;;
+(menu-bar-mode -1)
 (display-time)
 (remove-hook 'shell-mode-hook #'hide-mode-line-mode)
 
