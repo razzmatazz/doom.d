@@ -67,6 +67,8 @@
 ;;
 (evil-set-initial-state 'shell-mode 'normal)
 
+;(remove-hook 'text-mode-hook #'evil-normal-state)
+
 ;;
 ;; org mode setup
 ;;
@@ -94,6 +96,8 @@
 
 (after! company
   (setq company-idle-delay 0.2))
+
+(add-hook 'compilation-mode-hook #'visual-line-mode)
 
 ;;
 ;; mail
