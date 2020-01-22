@@ -76,7 +76,8 @@
 
 (after! org
   (setq org-startup-indented nil)
-; (setq org-agenda-files '("~/Dropbox/org" "~/Dropbox/org/printlog"))
+  (setq org-agenda-files '("~/Dropbox/org/journal.org"
+                           "~/Dropbox/org/printlog.org"))
 ; (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/org-calendar.ics")
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
