@@ -2,7 +2,7 @@
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; refresh' after modifying this file!
-
+(setq load-prefer-newer t)
 
 ;; These are used for a number of things, particularly for GPG configuration,
 ;; some email clients, file templates and snippets.
@@ -77,6 +77,7 @@
 (after! org
   (setq org-startup-indented nil)
   (setq org-agenda-files '("~/Dropbox/org/journal.org"
+                           "~/Dropbox/org/personal.org"
                            "~/Dropbox/org/printlog.org"))
 ; (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/org-calendar.ics")
   (setq org-todo-keywords
