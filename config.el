@@ -164,7 +164,7 @@
 ;;
 (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
 
-(after! pug
+(after! pug-mode
   (add-hook 'pug-mode-hook '(lambda ()
                               (setq pug-tab-width 2))))
 
