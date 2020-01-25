@@ -171,6 +171,12 @@
 ;;
 ;; custom functions
 ;;
+(defun sm-toggle-line-numbers ()
+  "doom/toggle-line-numbers uses 'relative style when toggling, I don't want that"
+  (interactive)
+  (setq display-line-numbers (if display-line-numbers nil t)))
+
+
 (defun sm-hide-dos-eol ()
   "Do not show ^M in files containing mixed UNIXand DOS line endings."
   (interactive)
@@ -223,6 +229,9 @@
    (:desc "open" :prefix "o"
      :desc "Prodigy services" :n "s" #'prodigy
      :desc "Mail" :n "m" #'mu4e)
+
+   (:desc "toggle" :prefix "t"
+     :desc "Line numbers" :n "l" #'sm-toggle-line-numbers)
    )
 
  (:after dired
