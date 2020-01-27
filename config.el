@@ -101,6 +101,7 @@
   (setq company-idle-delay 0.2))
 
 (add-hook 'compilation-mode-hook #'visual-line-mode)
+(add-hook 'prodigy-view-mode-hook #'visual-line-mode)
 
 ;;
 ;; mail
