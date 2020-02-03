@@ -149,6 +149,7 @@
 
 (after! omnisharp
   (map! (:map omnisharp-mode-map
+          :nm "C-]" #'omnisharp-go-to-definition
           :localleader
           (:prefix "r"
             "m"  #'omnisharp-rename
@@ -167,6 +168,7 @@
 
 (after! pug-mode
   (add-hook 'pug-mode-hook '(lambda ()
+                              (setq evil-shift-width 4)
                               (setq pug-tab-width 2))))
 
 ;;
@@ -217,6 +219,11 @@
 
  (:leader
    :desc "Switch to last buffer" :n  "TAB" #'mode-line-other-buffer
+
+   "x" nil
+   (:desc "text" :prefix "x"
+     (:desc "align" :prefix "a"
+       :desc "align-regexp" :nv "r" #'align-regexp))
 
    (:desc "flycheck/make" :prefix "e"
      :desc "List errors/diagnostics" :n "l" #'flycheck-list-errors
