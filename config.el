@@ -140,16 +140,17 @@
 ;;
 ;; language: C#
 ;;
-(defun sm-csharp-mode-setup ()
-  (setq indent-tabs-mode nil)
-  (setq c-syntactic-indentation t)
-  (c-set-style "ellemtel")
-  (setq c-basic-offset 4)
-  (setq truncate-lines t)
-  (setq tab-width 4)
-  (setq evil-shift-width 4))
 
 (after! omnisharp
+  (defun sm-csharp-mode-setup ()
+    (setq indent-tabs-mode nil)
+    (setq c-syntactic-indentation t)
+    (c-set-style "ellemtel")
+    (setq c-basic-offset 4)
+    (setq truncate-lines t)
+    (setq tab-width 4)
+    (setq evil-shift-width 4))
+
   (map! (:map omnisharp-mode-map
           :nm "C-]" #'omnisharp-go-to-definition
           :localleader
@@ -170,8 +171,10 @@
   (defun sm-fsharp-mode-setup ()
     (fsharp-mode-indent-smie-setup))
 
-  (add-hook 'fsharp-mode-hook 'sm-fsharp-mode-setup t))
+  (map! (:map fsharp-mode-map
+          "<backspace>" #'doom--backward-delete-whitespace-to-column))
 
+  (add-hook 'fsharp-mode-hook 'sm-fsharp-mode-setup t))
 
 ;;
 ;; language: web/html, pug, etc.
