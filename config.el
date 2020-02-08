@@ -78,7 +78,9 @@
   (setq org-startup-indented nil)
   (setq org-agenda-files '("~/Dropbox/org/journal.org"
                            "~/Dropbox/org/personal.org"
-                           "~/Dropbox/org/printlog.org"))
+                           "~/Dropbox/org/printlog-mgmt.org"
+                           "~/Dropbox/org/printlog-projects.org"
+                           ))
 ; (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/org-calendar.ics")
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
@@ -162,6 +164,16 @@
   (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
 
 ;;
+;; language: F#
+;;
+(after! fsharp-mode
+  (defun sm-fsharp-mode-setup ()
+    (fsharp-mode-indent-smie-setup))
+
+  (add-hook 'fsharp-mode-hook 'sm-fsharp-mode-setup t))
+
+
+;;
 ;; language: web/html, pug, etc.
 ;;
 (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
@@ -196,6 +208,14 @@
   (forward-line 1)
   (transpose-lines 1)
   (forward-line -1))
+
+(defun sm-csharp-alt-lsp-server ()
+  (interactive)
+  (setq lsp-csharp-server-path (expand-file-name "~/src/csharp-language-server/src/CSharpLanguageServer/bin/Debug/netcoreapp3.1/CSharpLanguageServer")))
+
+(defun sm-csharp-orig-lsp-server ()
+  (interactive)
+  (setq lsp-csharp-server-path nil))
 
 ;;
 ;; key bindings
