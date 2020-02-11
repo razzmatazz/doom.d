@@ -14,6 +14,10 @@
 ;;      Alternatively, press 'gd' (or 'C-c g d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
+(when noninteractive
+  (after! undo-tree
+    (global-undo-tree-mode -1)))
+
 (doom! :input
        ;;chinese
        ;;japanese
