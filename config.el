@@ -44,12 +44,13 @@
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
-  (add-to-list 'exec-path "/usr/local/bin")
+  (add-to-list 'exec-path (concat (getenv "HOME") "/.dotnet/tools"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/bin/google-cloud-sdk/bin"))
 
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
                   "/usr/local/bin" ":"
+                  (concat (getenv "HOME") "/.dotnet/tools") ":"
                   (concat (getenv "HOME") "/bin/google-cloud-sdk/bin") ":"
                   (getenv "PATH"))))
 
@@ -140,6 +141,7 @@
 ;;
 ;; language: C#
 ;;
+(setq omnisharp-expected-server-version "1.34.13")
 
 (after! omnisharp
   (defun sm-csharp-mode-setup ()

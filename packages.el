@@ -52,3 +52,5 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! zenburn-theme)
+
+(package! powershell)
