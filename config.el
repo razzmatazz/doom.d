@@ -16,6 +16,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'zenburn)
+(setq doom-theme 'doom-one-light)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -141,9 +142,10 @@
 ;;
 ;; language: C#
 ;;
-(setq omnisharp-expected-server-version "1.34.13")
-
 (after! omnisharp
+
+  (setq omnisharp-expected-server-version "1.34.14")
+
   (defun sm-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
     (setq c-syntactic-indentation t)
@@ -271,6 +273,10 @@
    :map dired-mode-map
    :nm "o" #'dired-find-file
    :nm "O" #'dired-up-directory)
+
+ (:after org
+   :map evil-org-mode-map
+   :i "C-h" #'backward-delete-char)
 
  (:after prodigy
    :map prodigy-mode-map
