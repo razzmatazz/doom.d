@@ -47,12 +47,14 @@
   (add-to-list 'exec-path "/usr/local/bin")
   (add-to-list 'exec-path (concat (getenv "HOME") "/.dotnet/tools"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/bin/google-cloud-sdk/bin"))
+  (add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
 
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
                   "/usr/local/bin" ":"
                   (concat (getenv "HOME") "/.dotnet/tools") ":"
                   (concat (getenv "HOME") "/bin/google-cloud-sdk/bin") ":"
+                  (concat (getenv "HOME") "/.cargo/bin") ":"
                   (getenv "PATH"))))
 
 ;;
@@ -140,6 +142,15 @@
          ))
 
 ;;
+;; coding
+;;
+
+;;
+;; language: rust
+;;
+(setq rustic-lsp-server 'rust-analyzer)
+
+;;
 ;; language: C#
 ;;
 (after! omnisharp
@@ -171,6 +182,7 @@
 ;;
 ;; language: F#
 ;;
+
 (after! fsharp-mode
   (defun sm-fsharp-mode-setup ()
     (fsharp-mode-indent-smie-setup))
