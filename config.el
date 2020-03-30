@@ -177,6 +177,10 @@
             "t" #'omnisharp-unit-test-last
             "b" #'omnisharp-unit-test-buffer)))
 
+  ; temporary hack
+  (defun +csharp-cleanup-omnisharp-server-h ()
+    t)
+
   (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
 
 ;;
