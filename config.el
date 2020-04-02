@@ -71,6 +71,10 @@
 ;;
 (evil-set-initial-state 'shell-mode 'normal)
 
+;; This is because C-i is bound to better-jumper-jump-forward, and in TTY emacs, the tab key triggers C-i.
+;; https://github.com/hlissner/doom-emacs/issues/1367
+(setq evil-want-C-i-jump nil)
+
 ;(remove-hook 'text-mode-hook #'evil-normal-state)
 
 ;;
