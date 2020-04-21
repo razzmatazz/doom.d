@@ -15,8 +15,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
-(setq doom-theme 'zenburn)
 (setq doom-theme 'doom-one-light)
+(setq doom-theme 'zenburn)
+(setq doom-theme 'doom-acario-light)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -65,6 +66,8 @@
 
 (after! evil-snipe
   (evil-snipe-mode -1))
+
+(remove-hook 'tty-setup-hook 'doom-init-clipboard-in-tty-emacs-h)
 
 ;;
 ;; evil overrides
