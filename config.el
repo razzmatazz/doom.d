@@ -15,9 +15,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-manegarm)
+(setq doom-theme 'tango)
 (setq doom-theme 'zenburn)
-(setq doom-theme 'doom-acario-light)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -49,6 +49,8 @@
   (add-to-list 'exec-path (concat (getenv "HOME") "/.dotnet/tools"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/bin/google-cloud-sdk/bin"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
+
+  (setenv "LANG" "en_US.UTF-8")
 
   (setenv "PATH"
           (concat "/usr/local/share/dotnet" ":"
@@ -107,6 +109,9 @@
 ;;
 ;; misc
 ;;
+
+(setq completion-ignore-case t)
+
 (setq dabbrev-case-fold-search 'case-fold-search)
 (setq dabbrev-case-replace nil)
 
@@ -127,6 +132,7 @@
 
 (after! mu4e
   (setq! mu4e-maildir (expand-file-name "~/Maildir") ; the rest of the mu4e folders are RELATIVE to this one
+         mu4e-headers-include-related nil
          mu4e-get-mail-command "mbsync -a"
          mu4e-index-update-in-background t
          mu4e-compose-signature-auto-include t
@@ -151,6 +157,10 @@
 ;;
 ;; coding
 ;;
+(setq lsp-eldoc-render-all t)
+(setq lsp-auto-execute-action nil)
+(setq lsp-ui-sideline-show-code-actions nil) ;; this can get slow for omnisharp-roslyn
+(setq lsp-signature-auto-activate nil) ;; this crashes on omnisharp-roslyn or causes erratic UI flashes
 
 ;;
 ;; language: rust
@@ -160,8 +170,30 @@
 ;;
 ;; language: C#
 ;;
-(after! omnisharp
 
+;; use local server version (at least for now, while developing)
+(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
+
+(after! csharp-mode
+  (defun sm-csharp-mode-setup ()
+    (setq indent-tabs-mode nil)
+    (setq c-syntactic-indentation t)
+    (c-set-style "ellemtel")
+    (setq c-basic-offset 4)
+    (setq truncate-lines t)
+    (setq tab-width 4)
+    (setq evil-shift-width 4))
+
+  (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t)
+
+  (map! (:map csharp-mode-map
+         (:leader
+          (:prefix "c"
+           (:prefix "t"
+            :desc "Run test at point" "p" #'lsp-csharp-run-test-at-point
+            :desc "Run all tests in buffer" "b" #'lsp-csharp-run-all-tests-in-buffer))))))
+
+(after! omnisharp
   (setq omnisharp-expected-server-version "1.34.14")
 
   (defun sm-csharp-mode-setup ()
@@ -186,9 +218,7 @@
 
   ; temporary hack
   (defun +csharp-cleanup-omnisharp-server-h ()
-    t)
-
-  (add-hook 'csharp-mode-hook 'sm-csharp-mode-setup t))
+    t))
 
 ;;
 ;; language: F#
@@ -241,11 +271,19 @@
 
 (defun sm-csharp-alt-lsp-server ()
   (interactive)
-  (setq lsp-csharp-server-path (expand-file-name "~/src/csharp-language-server/src/CSharpLanguageServer/bin/Debug/netcoreapp3.1/CSharpLanguageServer")))
+  (setq lsp-csharp-server-path
+        (expand-file-name
+         "~/src/csharp-language-server/src/CSharpLanguageServer/bin/Debug/netcoreapp3.1/CSharpLanguageServer")))
 
 (defun sm-csharp-orig-lsp-server ()
   (interactive)
   (setq lsp-csharp-server-path nil))
+
+(defun sm-csharp-local-omnisharp-lsp-server ()
+  (interactive)
+  (setq lsp-csharp-server-path
+        (expand-file-name
+         "~/src/omnisharp-server-local/run")))
 
 ;;
 ;; key bindings
@@ -258,6 +296,7 @@
 
 (map!
  :nv [tab] #'indent-for-tab-command
+ :nv ["C-i"] #'indent-for-tab-command ; tab is C-i in TTY mode
  :i "C-h" #'backward-delete-char
  :nm "C-]" #'+lookup/definition
  :nm "C-x ]" #'+default/search-project-for-symbol-at-point
