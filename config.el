@@ -172,7 +172,7 @@
 ;;
 
 ;; use local server version (at least for now, while developing)
-(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
+;#(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
 
 (after! csharp-mode
   (defun sm-csharp-mode-setup ()
@@ -194,7 +194,7 @@
             :desc "Run all tests in buffer" "b" #'lsp-csharp-run-all-tests-in-buffer))))))
 
 (after! omnisharp
-  (setq omnisharp-expected-server-version "1.34.14")
+  (setq omnisharp-expected-server-version "1.34.15")
 
   (defun sm-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
@@ -226,6 +226,7 @@
 
 (after! fsharp-mode
   (defun sm-fsharp-mode-setup ()
+    (electric-indent-local-mode -1)
     (fsharp-mode-indent-smie-setup))
 
   (map! (:map fsharp-mode-map
@@ -281,9 +282,7 @@
 
 (defun sm-csharp-local-omnisharp-lsp-server ()
   (interactive)
-  (setq lsp-csharp-server-path
-        (expand-file-name
-         "~/src/omnisharp-server-local/run")))
+  (setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp/omnisharp-roslyn/run")))
 
 ;;
 ;; key bindings
