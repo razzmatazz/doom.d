@@ -16,8 +16,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'doom-manegarm)
-(setq doom-theme 'tango)
 (setq doom-theme 'zenburn)
+(setq doom-theme 'tango)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -131,8 +131,11 @@
   (add-load-path! "/usr/local/share/emacs/site-lisp/mu/mu4e"))
 
 (after! mu4e
+  (remove-hook 'mu4e-compose-mode-hook #'org-mu4e-compose-org-mode)
+
   (setq! mu4e-maildir (expand-file-name "~/Maildir") ; the rest of the mu4e folders are RELATIVE to this one
          mu4e-headers-include-related nil
+         mu4e-headers-show-threads nil
          mu4e-get-mail-command "mbsync -a"
          mu4e-index-update-in-background t
          mu4e-compose-signature-auto-include t
@@ -174,6 +177,20 @@
 ;; use local server version (at least for now, while developing)
 ;#(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
 
+
+(defun lsp-csharp-run-test-at-point ()
+  "Starts test run at current position (if any)."
+  (interactive)
+  (lsp-send-execute-command "omnisharp/runTestMethod"
+                            (vector (ht ("textDocumentUri" (lsp--buffer-uri))
+                                        ("position" (lsp--cur-position))))))
+
+(defun lsp-csharp-run-all-tests-in-buffer ()
+  "Starts test run for all test methods in current buffer."
+  (interactive)
+  (lsp-send-execute-command "omnisharp/runTestMethod"
+                            (vector (ht ("textDocumentUri" (lsp--buffer-uri))))))
+
 (after! csharp-mode
   (defun sm-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
@@ -189,7 +206,7 @@
   (map! (:map csharp-mode-map
          (:leader
           (:prefix "c"
-           (:prefix "t"
+           (:prefix "T"
             :desc "Run test at point" "p" #'lsp-csharp-run-test-at-point
             :desc "Run all tests in buffer" "b" #'lsp-csharp-run-all-tests-in-buffer))))))
 
@@ -225,12 +242,15 @@
 ;;
 
 (after! fsharp-mode
+
+  (setq inferior-fsharp-program "dotnet fsi --readline-")
+
   (defun sm-fsharp-mode-setup ()
     (electric-indent-local-mode -1)
     (fsharp-mode-indent-smie-setup))
 
-  (map! (:map fsharp-mode-map
-          "<backspace>" #'doom--backward-delete-whitespace-to-column))
+;  (map! (:map fsharp-mode-map
+;          "<backspace>" #'doom--backward-delete-whitespace-to-column))
 
   (add-hook 'fsharp-mode-hook 'sm-fsharp-mode-setup t))
 
