@@ -9,15 +9,17 @@
 (setq user-full-name "Saulius Menkevičius"
       user-mail-address "sauliusmenkevicius@fastmail.com")
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 14))
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
 (setq doom-big-font (font-spec :family "Source Code Pro" :size 17))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'doom-manegarm)
+(setq doom-theme 'doom-zenburn)
 (setq doom-theme 'zenburn)
 (setq doom-theme 'tango)
+(setq doom-theme 'doom-gruvbox-light)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -46,6 +48,7 @@
 (when IS-MAC
   (add-to-list 'exec-path "/usr/local/share/dotnet")
   (add-to-list 'exec-path "/usr/local/bin")
+  (add-to-list 'exec-path (concat (getenv "HOME") "/.dotnet"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/.dotnet/tools"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/bin/google-cloud-sdk/bin"))
   (add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
@@ -175,7 +178,7 @@
 ;;
 
 ;; use local server version (at least for now, while developing)
-;#(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
+(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
 
 
 (defun lsp-csharp-run-test-at-point ()
