@@ -307,6 +307,8 @@
                         (error (funcall error-callback (error-message-string err)))))))
 )
 
+(load! "+lsp-csharp-improvements.el")
+
 (after! csharp-mode
   (defun sm-csharp-mode-setup ()
     (setq indent-tabs-mode nil)
