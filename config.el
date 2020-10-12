@@ -63,6 +63,8 @@
                   (concat (getenv "HOME") "/.cargo/bin") ":"
                   (getenv "PATH"))))
 
+(setenv "CLOUDSDK_PYTHON" "python2")
+
 ;;
 ;; disable stuff from the default doom config
 ;;
