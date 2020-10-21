@@ -96,6 +96,7 @@
   (setq org-startup-indented nil)
   (setq org-agenda-files '("~/Dropbox/org/journal.org"
                            "~/Dropbox/org/personal.org"
+                           "~/Dropbox/org/printlog-mtep.org"
                            "~/Dropbox/org/printlog-mgmt.org"
                            "~/Dropbox/org/printlog-projects.org"
                            ))
