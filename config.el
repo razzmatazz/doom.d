@@ -235,6 +235,13 @@
                               (setq evil-shift-width 4)
                               (setq pug-tab-width 2))))
 
+(after! web-mode
+  (add-hook 'web-mode-hook
+            '(lambda ()
+               (if (string-equal "cshtml"
+                                 (file-name-extension (buffer-file-name)))
+                   (lsp)))))
+
 ;;
 ;; custom functions
 ;;

@@ -133,6 +133,13 @@
   (lsp-interface (omnisharp-rzls:RazorCodeActionParams (:range :textDocument :context)))
   (lsp-interface (omnisharp-rzls:RazorCodeAction (:title :edit :data)))
 
+  ;; razor server commands:
+  ;;  - "razor/mapToDocumentRanges"
+  ;;    - request: { kind, projectedRanges, razorDocumentUri }
+  ;;      - kind: CSharp: 1, Html: 2, Razor: 3
+  ;;      - projectedRanges: [ { start: { line, character }, end: {xxx} } ]
+  ;;    - response: { ranges: [ { start: { line, character }, end: {xxx} ] }
+
   (lsp-defun lsp-csharp--rzls-update-csharp-buffer (_workspace
                                                     (&omnisharp-rzls:BufferChanges
                                                      :changes
