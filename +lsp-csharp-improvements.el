@@ -188,3 +188,33 @@
                                           ("razor/runCodeAction" 'lsp-csharp--rzls-run-code-action)
                                           ("razor/updateCSharpBuffer" 'lsp-csharp--rzls-update-csharp-buffer)
                                           ("razor/updateHtmlBuffer" 'ignore)))))
+
+(defun sm-csharp-stuff ()
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request-async "o#/checkalivestatus"
+                       lsp--empty-ht
+                       (lambda (_)
+                         (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request "o#/checkalivestatus" (list)))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request "o#/something"
+                 (list)
+                 (lambda (_) (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request "o#/checkreadystatus" (list)))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request "o#/checkreadystatusXXX" (list)))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request "o#/v2/discovertests" (list)))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp)
+    (lsp-request "o#/stopserver" (list)))
+
+  )
