@@ -17,9 +17,8 @@
 ;; `load-theme' function. These are the defaults.
 (setq doom-theme 'doom-manegarm)
 (setq doom-theme 'doom-zenburn)
-(setq doom-theme 'zenburn)
-(setq doom-theme 'tango)
 (setq doom-theme 'doom-gruvbox-light)
+(setq doom-theme 'zenburn)
 
 
 ;; If you want to change the style of line numbers, change this to `relative' or
@@ -56,8 +55,8 @@
   (setenv "LANG" "en_US.UTF-8")
 
   (setenv "PATH"
-          (concat "/usr/local/share/dotnet" ":"
-                  "/usr/local/bin" ":"
+          (concat "/usr/local/bin" ":"
+                  (concat (getenv "HOME") "/.dotnet") ":"
                   (concat (getenv "HOME") "/.dotnet/tools") ":"
                   (concat (getenv "HOME") "/bin/google-cloud-sdk/bin") ":"
                   (concat (getenv "HOME") "/.cargo/bin") ":"

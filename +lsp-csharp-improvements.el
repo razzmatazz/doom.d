@@ -197,13 +197,20 @@
                        (lambda (_)
                          (lsp--info "alive!"))))
 
-  (with-lsp-workspace (lsp-find-workspace 'csharp)
-    (lsp-request "o#/checkalivestatus" (list)))
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request-async "o#/checkalivestatus" (list) (lambda (value) (lsp--info (concat "alive!: value=" (json-encode value))))))
 
   (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
-    (lsp-request "o#/something"
-                 (list)
-                 (lambda (_) (lsp--info "alive!"))))
+    (lsp-request-async "o#/reanalyze" (list) (lambda (_) (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request-async "o#/something" (list) (lambda (_) (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request-async "o#/something-2" (list) (lambda (_) (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request-async "o#/something-non-existent" (list) (lambda (_) (lsp--info "alive!"))))
 
   (with-lsp-workspace (lsp-find-workspace 'csharp)
     (lsp-request "o#/checkreadystatus" (list)))
@@ -211,8 +218,13 @@
   (with-lsp-workspace (lsp-find-workspace 'csharp)
     (lsp-request "o#/checkreadystatusXXX" (list)))
 
-  (with-lsp-workspace (lsp-find-workspace 'csharp)
-    (lsp-request "o#/v2/discovertests" (list)))
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
+    (lsp-request-async "o#/something-non-existent" (list) (lambda (_) (lsp--info "alive!"))))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/test-two.cs")
+    (lsp-request-async "o#/gotodefinition"
+                       (list)
+                       (lambda (value) (lsp--info (concat "go to def: value=" (json-encode value))))))
 
   (with-lsp-workspace (lsp-find-workspace 'csharp)
     (lsp-request "o#/stopserver" (list)))
