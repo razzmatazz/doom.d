@@ -223,8 +223,19 @@
 
   (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/test-two.cs")
     (lsp-request-async "o#/gotodefinition"
-                       (list)
-                       (lambda (value) (lsp--info (concat "go to def: value=" (json-encode value))))))
+                       `(:WantMetadata t
+                         :FileName "/Users/bob/src/omnisharp/test/test-two.cs"
+                         :Line 11
+                         :Column 21
+                         :Buffer nil)
+                       (lambda (value)
+                         (let* ((metadata-source (lsp-get value :MetadataSource)))
+                           (lsp--info (json-encode metadata-source))
+
+                           (lsp-request-async "o#/metadata"
+                                              metadata-source
+                                              (lambda (resp)
+                                                (lsp--info (json-encode resp))))))))
 
   (with-lsp-workspace (lsp-find-workspace 'csharp)
     (lsp-request "o#/stopserver" (list)))
