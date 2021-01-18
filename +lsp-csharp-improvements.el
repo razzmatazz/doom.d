@@ -1,6 +1,24 @@
 ;;; +lsp-csharp-improvements.el -*- lexical-binding: t; -*-
 
 (after! lsp-csharp
+  (lsp-interface (omnisharp:ProjectInformationRequest (:FileName)))
+
+  (lsp-interface (omnisharp:MsBuildProject (:IsUnitProject
+                                            :IsExe
+                                            :Platform
+                                            :Configuration
+                                            :IntermediateOutputPath
+                                            :OutputPath
+                                            :TargetFrameworks
+                                            :SourceFiles
+                                            :TargetFramework
+                                            :TargetPath
+                                            :AssemblyName
+                                            :Path
+                                            :ProjectGuid)))
+
+  (lsp-interface (omnisharp:ProjectInformation (:ScriptProject :MsBuildProject)))
+
   (lsp-interface (omnisharp:TestMessageEvent (:MessageLevel :Message)))
   (lsp-interface (omnisharp:DotNetTestResult (:MethodName :Outcome :ErrorMessage :ErrorStackTrace :StandardOutput :StandardError)))
 
@@ -90,6 +108,16 @@
             (lsp-csharp--test-message "STANDARD ERROR:")
             (seq-doseq (stderr-line standard-error)
               (lsp-csharp--test-message stderr-line))))))
+
+  (lsp-defun lsp-csharp-open-project-file ()
+    (interactive)
+    (-let* ((project-info-req (lsp-make-omnisharp-project-information-request
+                               :file-name (buffer-file-name)))
+            (project-info (lsp-request "o#/project" project-info-req))
+            ((&omnisharp:ProjectInformation :ms-build-project) project-info)
+            ((&omnisharp:MsBuildProject :is-exe :path) ms-build-project)
+            )
+      (find-file path)))
 
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection
@@ -221,10 +249,14 @@
   (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/classA.cs")
     (lsp-request-async "o#/something-non-existent" (list) (lambda (_) (lsp--info "alive!"))))
 
-  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/test-two.cs")
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/TestClass.cs")
+    (lsp-request "o#/project" (lsp-make-omnisharp-project-information-request
+                               :file-name "/Users/bob/src/omnisharp/test/TestClass.cs")))
+
+  (with-lsp-workspace (lsp-find-workspace 'csharp "/Users/bob/src/omnisharp/test/TestClass.cs")
     (lsp-request-async "o#/gotodefinition"
                        `(:WantMetadata t
-                         :FileName "/Users/bob/src/omnisharp/test/test-two.cs"
+                         :FileName "/Users/bob/src/omnisharp/test/TestClass.cs"
                          :Line 11
                          :Column 21
                          :Buffer nil)
