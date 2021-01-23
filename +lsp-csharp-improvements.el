@@ -18,6 +18,8 @@
                                             :ProjectGuid)))
 
   (lsp-interface (omnisharp:ProjectInformation (:ScriptProject :MsBuildProject)))
+  (lsp-interface (omnisharp:MetadataRequest (:AssemblyName :TypeName :ProjectName :VersionNumber :Language)))
+  (lsp-interface (omnisharp:MetadataResponse (:SourceName :Source)))
 
   (lsp-interface (omnisharp:TestMessageEvent (:MessageLevel :Message)))
   (lsp-interface (omnisharp:DotNetTestResult (:MethodName :Outcome :ErrorMessage :ErrorStackTrace :StandardOutput :StandardError)))
@@ -111,13 +113,44 @@
 
   (lsp-defun lsp-csharp-open-project-file ()
     (interactive)
-    (-let* ((project-info-req (lsp-make-omnisharp-project-information-request
-                               :file-name (buffer-file-name)))
+    (-let* ((project-info-req (lsp-make-omnisharp-project-information-request :file-name (buffer-file-name)))
             (project-info (lsp-request "o#/project" project-info-req))
             ((&omnisharp:ProjectInformation :ms-build-project) project-info)
-            ((&omnisharp:MsBuildProject :is-exe :path) ms-build-project)
-            )
+            ((&omnisharp:MsBuildProject :is-exe :path) ms-build-project))
       (find-file path)))
+
+  (lsp-defun lsp-csharp--osmd-uri-handler (uri)
+    (string-match "^osmd:/projects/\\(.+\\)/assemblies/\\(.+\\)/types/\\(.+\\)$" uri)
+    (-when-let* ((project-name (match-string 1 uri))
+                 (assembly-name (match-string 2 uri))
+                 (type-name (match-string 3 uri)))
+      (-when-let* ((metadata-req (lsp-make-omnisharp-metadata-request :project-name project-name
+                                                                      :assembly-name assembly-name
+                                                                      :type-name type-name))
+                   (metadata (lsp-request "o#/metadata" metadata-req))
+                   ((&omnisharp:MetadataResponse :source-name :source) metadata)
+                   (filename (f-join ".cache"
+                                     "lsp-csharp"
+                                     "metadata"
+                                     "projects" project-name
+                                     "assemblies" assembly-name
+                                     "types" (concat type-name ".metadata")))
+                   (file-location (expand-file-name filename (lsp--suggest-project-root)))
+                   (path (f-dirname file-location)))
+
+        (unless (file-directory-p path)
+          (make-directory path t))
+
+        (unless (find-buffer-visiting file-location)
+          (with-current-buffer (generate-new-buffer file-location)
+            (insert source)
+            (set-visited-file-name file-location)
+            (setq-local buffer-read-only t)
+            (set-buffer-modified-p nil)
+            (csharp-mode)
+            (setq-local lsp-buffer-uri uri)))
+
+        file-location)))
 
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection
@@ -141,13 +174,16 @@
                                                ("o#/testcompleted" 'lsp-csharp--handle-os-testcompleted)
                                                ("o#/projectconfiguration" 'ignore)
                                                ("o#/projectdiagnosticstatus" 'ignore))
+
+                    :uri-handlers (lsp-ht ("osmd" #'lsp-csharp--osmd-uri-handler))
                     :download-server-fn
                     (lambda (_client callback error-callback _update?)
                       (condition-case err
                           (progn
                             (lsp-csharp--install-server nil nil)
                             (funcall callback))
-                        (error (funcall error-callback (error-message-string err))))))))
+                        (error (funcall error-callback (error-message-string err)))))))
+  )
 
 (after! lsp-mode
   ;;

@@ -183,8 +183,8 @@
 ;;
 
 ;; use local server version (at least for now, while developing)
-(setq lsp-csharp-server-path nil)
-(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp-server-local/run"))
+;(setq lsp-csharp-server-path nil)
+(setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp/omnisharp-server-local/run"))
 
 (load! "+lsp-csharp-improvements.el")
 
