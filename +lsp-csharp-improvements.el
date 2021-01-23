@@ -120,37 +120,36 @@
       (find-file path)))
 
   (lsp-defun lsp-csharp--osmd-uri-handler (uri)
-    (string-match "^osmd:/projects/\\(.+\\)/assemblies/\\(.+\\)/types/\\(.+\\)$" uri)
+    (string-match "^osmd:/Project/\\(.+\\)/Assembly/\\(.+\\)/Symbol/\\(.+\\)\.cs$" uri)
     (-when-let* ((project-name (match-string 1 uri))
                  (assembly-name (match-string 2 uri))
-                 (type-name (match-string 3 uri)))
-      (-when-let* ((metadata-req (lsp-make-omnisharp-metadata-request :project-name project-name
-                                                                      :assembly-name assembly-name
-                                                                      :type-name type-name))
-                   (metadata (lsp-request "o#/metadata" metadata-req))
-                   ((&omnisharp:MetadataResponse :source-name :source) metadata)
-                   (filename (f-join ".cache"
-                                     "lsp-csharp"
-                                     "metadata"
-                                     "projects" project-name
-                                     "assemblies" assembly-name
-                                     "types" (concat type-name ".metadata")))
-                   (file-location (expand-file-name filename (lsp--suggest-project-root)))
-                   (path (f-dirname file-location)))
-
-        (unless (file-directory-p path)
-          (make-directory path t))
+                 (type-name (match-string 3 uri))
+                 (metadata-req (lsp-make-omnisharp-metadata-request :project-name project-name
+                                                                    :assembly-name assembly-name
+                                                                    :type-name type-name))
+                 (metadata (lsp-request "o#/metadata" metadata-req))
+                 ((&omnisharp:MetadataResponse :source-name :source) metadata)
+                 (filename (f-join ".cache"
+                                   "lsp-csharp"
+                                   "metadata"
+                                   "projects" project-name
+                                   "assemblies" assembly-name
+                                   "types" (concat type-name ".cs")))
+                 (file-location (expand-file-name filename (lsp--suggest-project-root)))
+                 (metadata-file-location (concat file-location ".metadata-uri"))
+                 (path (f-dirname file-location)))
 
         (unless (find-buffer-visiting file-location)
-          (with-current-buffer (generate-new-buffer file-location)
-            (insert source)
-            (set-visited-file-name file-location)
-            (setq-local buffer-read-only t)
-            (set-buffer-modified-p nil)
-            (csharp-mode)
-            (setq-local lsp-buffer-uri uri)))
+          (unless (file-directory-p path)
+            (make-directory path t))
 
-        file-location)))
+          (with-temp-file metadata-file-location
+            (insert uri))
+
+          (with-temp-file file-location
+            (insert source)))
+
+        file-location))
 
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection
@@ -176,6 +175,12 @@
                                                ("o#/projectdiagnosticstatus" 'ignore))
 
                     :uri-handlers (lsp-ht ("osmd" #'lsp-csharp--osmd-uri-handler))
+                    :before-file-open-fn (lambda (_workspace)
+                                           (let ((metadata-file-name (concat buffer-file-name ".metadata-uri")))
+                                             (setq-local lsp-buffer-uri
+                                                         (when (file-exists-p metadata-file-name)
+                                                           (with-temp-buffer (insert-file-contents metadata-file-name)
+                                                                             (buffer-string))))))
                     :download-server-fn
                     (lambda (_client callback error-callback _update?)
                       (condition-case err
