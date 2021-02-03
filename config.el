@@ -100,12 +100,6 @@
 
 (after! org
   (setq org-startup-indented nil)
-  (setq org-agenda-files '("~/Dropbox/org/journal.org"
-                           "~/Dropbox/org/personal.org"
-                           "~/Dropbox/org/printlog-mtep.org"
-                           "~/Dropbox/org/printlog-mgmt.org"
-                           "~/Dropbox/org/printlog-projects.org"
-                           ))
 ; (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/org-calendar.ics")
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
