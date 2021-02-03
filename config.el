@@ -65,6 +65,13 @@
 (setenv "CLOUDSDK_PYTHON" "python2")
 
 ;;
+;; package load-path overrides
+;;
+(add-to-list 'load-path "~/src/omnisharp/lsp-mode")
+(load "lsp-mode")
+(load "lsp-csharp")
+
+;;
 ;; disable stuff from the default doom config
 ;;
 ;(after! smartparens
@@ -183,7 +190,7 @@
 ;;
 
 ;; use local server version (at least for now, while developing)
-;(setq lsp-csharp-server-path nil)
+(setq lsp-csharp-server-path nil)
 (setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp/omnisharp-server-local/run"))
 
 (load! "+lsp-csharp-improvements.el")
