@@ -54,3 +54,6 @@
 (package! zenburn-theme)
 
 (package! powershell)
+
+;; use local lsp-mode
+(package! lsp-mode :ignore t)

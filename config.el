@@ -67,9 +67,8 @@
 ;;
 ;; package load-path overrides
 ;;
-(add-to-list 'load-path "~/src/omnisharp/lsp-mode")
-(load "lsp-mode")
-(load "lsp-csharp")
+(add-load-path! "~/src/omnisharp/lsp-mode")
+(add-load-path! "~/src/omnisharp/lsp-mode/clients")
 
 ;;
 ;; disable stuff from the default doom config
@@ -186,6 +185,7 @@
 ;; use local server version (at least for now, while developing)
 (setq lsp-csharp-server-path nil)
 (setq lsp-csharp-server-path (expand-file-name "~/src/omnisharp/omnisharp-server-local/run"))
+(setq lsp-csharp-enable-decompilation-support t)
 
 (load! "+lsp-csharp-improvements.el")
 
